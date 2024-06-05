@@ -1,0 +1,292 @@
+/**
+  @author:Dana
+  @description:Create a Java application to maintain data for car owners.  
+  @date:4/24/2024
+*/
+
+import java.util.*;  // ArrayList, Scanner
+import java.io.*;    // File, IOException
+
+public class TheDriver{
+   public static void main(String[] args) throws IOException {
+      ArrayList<Owner> owners = new ArrayList<Owner>();        
+      buildArrayList(owners); 
+     /*
+      displayArrayList(owners); 
+      displayAllMakes(owners);
+      displayOldestCar(owners);
+      changeCarColor(owners);
+      searchByCertainColor(owners);
+      listAllColors(owners);
+      listAllMakes(owners);
+      listAllModels(owners);
+      */
+      searchListMenu(owners);
+      
+      System.out.println("Program terminating...");      
+   }//end main
+   
+
+/**
+   Display menu and processor menu option.
+   @param     owners   the list of owners.
+*/   
+   public static void searchListMenu(ArrayList<Owner> owners){
+      int choice = Utilities.mainMenu();
+      
+      while(choice != 8){
+         switch(choice){
+            case 0: listAllModels(owners);
+               break;
+            case 1: listAllMakes(owners);
+               break;
+            case 2: listAllColors(owners);
+               break; 
+            case 3:searchByCertainColor(owners);
+               break;
+            case 4:  changeCarColor(owners);
+               break;
+            case 5:  displayOldestCar(owners); 
+               break;
+            case 6:displayAllMakes(owners);
+               break;
+            case 7: displayArrayList(owners); 
+               break;     
+         }//end switch
+         
+         choice = Utilities.mainMenu();
+      }//end while
+   }//end searchList 
+  
+   
+/**
+      List all car models only.
+      @param  owners  the list of the owners.
+*/
+   public static void listAllModels(ArrayList<Owner> owners) {
+      boolean found = false;
+      
+      System.out.println("================================================"); 
+      System.out.println("List all models only: ");         
+      for(Owner owner: owners){
+               
+         System.out.println(owner.getCar().getModel());      
+         found = true;
+      }//end for
+   }//end listAllColors
+
+
+/**
+      List all car makes only.
+      @param  owners  the list of the owners.
+*/
+   public static void listAllMakes(ArrayList<Owner> owners) {
+      boolean found = false;
+      
+      System.out.println("================================================"); 
+      System.out.println("List all makes only: ");         
+      for(Owner owner: owners){
+               
+         System.out.println(owner.getCar().getMake());      
+         found = true;
+      }//end for
+   }//end listAllColors
+
+
+/**
+      List all car colors only.
+      @param  owners  the list of the owners.
+*/
+   public static void listAllColors(ArrayList<Owner> owners) {
+     // Scanner scan = new Scanner(System.in);
+     // String color = scan.nextLine();
+      boolean found = false;
+      
+      System.out.println("================================================"); 
+      System.out.println("List all colors only: ");         
+      for(Owner owner: owners){
+               
+         System.out.println(owner.getCar().getColor());      
+         found = true;
+      }//end for
+   }//end listAllColors
+   
+  
+/**
+      Search by certain color. 
+      @param  owners  the list of the owners.
+*/ 
+   public static void searchByCertainColor(ArrayList<Owner> owners) {
+      Scanner scan = new Scanner(System.in);
+    
+      System.out.println("================================================");
+      System.out.print("Search by Certain Color: ");
+      String color = scan.nextLine();  // Get user input for the color
+   
+      boolean found = false;
+    
+      for(Owner owner: owners){
+         if(owner.getCar().getColor().toUpperCase().contains(color.toUpperCase())) {
+            System.out.print("Car with color found: " + owner.getCar().getColor());
+            found = true;
+         }//end if
+      }//end for
+    
+      if(!found){
+         System.out.println("No cars found with color containing: |" + color + "|");
+      }//end if     
+   }//end displayCertainColor
+
+ 
+/**
+      Allowing the user change car color. 
+      @param  owners  the list of the owners.
+*/  
+   public static void changeCarColor(ArrayList<Owner> owners) {
+      Scanner scan = new Scanner(System.in);
+      
+      System.out.println("================================================"); 
+      System.out.println("\nEnter the make and model of the car to change its color: ");
+      String make = scan.nextLine();
+      String model = scan.nextLine();
+      
+      int size = owners.size();   
+      boolean found = false;
+      
+                
+      for(int i = 0; i < size; i++){
+         if(owners.get(i).getCar().getMake().equalsIgnoreCase(make) &&
+           owners.get(i).getCar().getModel().equalsIgnoreCase(model)){
+            System.out.println("\nCar make and model found: " + make +
+                                " " + model);
+            System.out.println("\nThe original color of the car: " +
+                                owners.get(i).getCar().getColor());
+            
+            System.out.println("\nWhat is the new color you want?");
+            String newColor = scan.nextLine(); 
+            
+            owners.get(i).getCar().setColor(newColor); 
+            System.out.println("New color for the car: " + owners.get(i).getCar().getColor());
+            found = true;
+         }//end if
+      }//end for
+    
+    
+      if(!found){
+         System.out.println("\nNo car found with make and model: |" + make + " " + model + "|");
+      }//end if       
+   }//end changeCarColor
+  
+
+/**
+      Determining and display the oldest car.
+      @param  owners  the list of the owners.
+*/
+   public static void displayOldestCar(ArrayList<Owner> owners) {
+      int size = owners.size();
+   
+      if (size <= 0) {
+         System.out.println("\nNo oldest car available.");
+         return;
+      }//end if
+   
+      int oldestYear = Integer.MAX_VALUE; 
+      String oldestCarMake = "";
+      Car oldestCar = null;
+   
+      for (int i = 0; i < size; i++) {
+         Car currentCar = owners.get(i).getCar(); 
+         if (currentCar != null && currentCar.getYear() < oldestYear) {
+            oldestYear = currentCar.getYear();
+            oldestCarMake = currentCar.getMake();
+            oldestCar = currentCar;
+         }//end if
+      }//end for
+   
+      if (oldestCar == null) {
+         System.out.println("\nNo oldest car found.");
+      }//end if
+      else {
+         System.out.println("================================================");  
+         System.out.printf("\nThe oldest car is: %s, a %s from %d.\n", oldestCarMake,
+                            oldestCar.getModel(), oldestYear);
+      }//end else
+   } //end for
+ 
+    
+/**
+      Display all car makes only.
+      @param  owners  the list of the owners. 
+*/ 
+   public static void displayAllMakes(ArrayList<Owner> owners) {
+      boolean found = false;
+      
+      System.out.print("Display all makes: ");  
+            
+      for(Owner owner: owners){
+               
+         System.out.println(owner.getCar().getMake());      
+         found = true;
+      }//end for         
+   }//end displayAllMakes
+    
+                   
+/**
+      Display the entire ArrayList of Owner objects.
+      @param   owners    ArrayList of Owner objects.
+*/
+   public static void displayArrayList(ArrayList<Owner> owners){
+        
+      int size = owners.size();
+      for (int i = 0; i < size; i ++){
+         System.out.println(owners.get(i));
+         System.out.println("================================================"); 
+      }//end for  
+   }//end displayArrayList  
+   
+      
+/**
+      Builds the ArrayList from the a data file.
+      @param  owners  the ArrayList of Owner objects.
+*/
+   public static void buildArrayList(ArrayList<Owner> owners) throws IOException{
+      File infile = new File("personCarData.csv");
+      if (!infile.exists()) {
+         System.out.println("No file found...program terminating.");
+         System.exit(0);
+      }//end if
+   
+      Scanner scan = new Scanner(infile);
+      String  name = "",
+              make = "",
+              model = "",
+              color = "",
+              line = "";
+              
+      String[] tokens;
+      int year = 0;
+           
+      scan.nextLine();//advance past the column headers 
+      
+      while (scan.hasNext()) {
+         line = scan.nextLine(); 
+         tokens = line.split(",");
+            
+         String[] names = tokens[0].split(" ", 2); 
+         String firstName = names.length > 0 ? names[0] : "";
+         String lastName = names.length > 1 ? names[1] : "";
+      
+         make = tokens[1];
+         model = tokens[2];
+         year = Integer.parseInt(tokens[3]);
+         color = tokens[4];
+      
+         Car car = new Car(make, model, year, color);
+         Owner owner = new Owner(firstName, lastName,make, model, year, color);
+         owners.add(owner); // Add the new Owner to the ArrayList
+      }//end while
+   
+      scan.close(); // Close the scanner
+   }//end buildArrayList
+    
+}//end class
