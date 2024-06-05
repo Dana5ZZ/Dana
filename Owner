@@ -1,0 +1,123 @@
+/**
+  @author:Dana
+  @description:Create a Java application to maintain data for car owners.  
+  @date:4/24/2024
+*/
+public class Owner{
+   private final String firstName;
+   private final String lastName;
+   private Car car;
+
+   
+/**
+      Default constructor - sets all attributes to initial values.
+*/
+   public Owner(){
+      firstName = "";
+      lastName = "";
+      car = new Car();
+   }//end constructor
+ 
+  
+/**
+      Constructor.
+      @param   firstName   the first name of the owner.
+      @param   lastName    the last name of the owner.
+*/  
+   public Owner(String firstName, String lastName){
+      this. firstName = firstName;
+      this. lastName = lastName;
+      car = new Car();
+   }//end Owner
+  
+  
+/**
+      Constructor.
+      @param   firstName   the first name of the owner.
+      @param   lastName    the last name of the owner.
+      @param   make        the make of the car.
+      @param   model       the model of the car.
+      @param   color       the color of the car.
+      @param   year        the year of the car.
+*/
+   public Owner(String firstName, String lastName, 
+               String make, String model,int year,
+               String color){
+      this. firstName = firstName;
+      this. lastName = lastName;
+      car = new Car(make, model, year, color);                
+   }//end Owner
+
+  
+/**   
+      Sets the car.
+      @param   car   the car of the Car.
+*/   
+   public void setCar(Car car){
+      this.car = car;
+   }//end setColor
+
+
+/**
+      Return the Car.
+      @return    car      Return the car of owner.
+*/
+   public Car getCar(){
+      return car;
+   }//end getCar
+
+
+//Getters for immutable attributes of Owner.
+/**
+      Return the first name of owner.
+      @return    firstName      Return the first name of owner.
+*/
+   public String getFirstName(){
+      return firstName;  
+   }//end getMake
+
+   
+/**
+      Return the last name of owner.
+      @return    lastName      Return the last name of owner.
+*/
+   public String getLastName(){
+      return lastName;  
+   }//end getMake
+      
+
+/**
+      Return the current state of the object.
+      @return   the current state of the object.
+*/
+   public String toString(){
+      StringBuilder sb = new StringBuilder();
+      
+      sb.append("First Name: " + firstName +
+                 ", Last Name: " + lastName);    
+      sb.append(car);
+   
+      return sb. toString();      
+   }//end toString
+     
+
+/**
+      Method comparing itself to another Owner other.
+      @param   other    comparing itself to another Car object.
+*/    
+   public boolean equals(Object obj){
+      if(obj == this){
+         return true;
+      }//end if
+       
+      if(!(obj instanceof Owner)){
+         return false;
+      }//end if
+       
+      Owner other = (Owner) obj;
+      return this.firstName.equals(other.firstName) && 
+             this.lastName.equals(other.lastName) && 
+             this.car.equals(other.car);             
+   }//end equals
+      
+}//end class
